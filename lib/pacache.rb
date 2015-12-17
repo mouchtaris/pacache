@@ -19,7 +19,11 @@ class DB
     @count = 0
   end
 
-  def internal_hash; @db end
+  def internal_hash!; @db end
+
+  def size
+    YAML.dump(internal_hash!).size
+  end
 
   def key_for(*keys)
     File.join(*keys.map(&:to_s))

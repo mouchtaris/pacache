@@ -47,7 +47,9 @@ def prepare_serving
 end
 
 def consolidate
-  the_db = db.internal_hash
+  log "Consolidating database: #{db.size}B"
+
+  the_db = db.internal_hash!
   newz = Dir['new/*']
 
   yamlz = newz.to_enum.lazy.map { |nu| File.open(nu, 'r', &YAML.method(:load)) }
@@ -55,6 +57,9 @@ def consolidate
     log "Consolidating: #{entry.to_a.first.first}"
     the_db.merge! entry
   end
+  log "Cleaning up databases"
   the_db.reject! { |k, v| /(core|extra|community)\.db(\.sig)?$/.match(k) }
+
+  log "New database: #{db.size}B"
   File.open(Pacache::DB::DB, 'w') do |fout| YAML.dump(the_db, fout) end
 end
