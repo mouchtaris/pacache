@@ -47,7 +47,7 @@ def prepare_serving
 end
 
 def consolidate
-  log "Consolidating database: #{db.size}B"
+  log "Consolidating database"
 
   the_db = db.internal_hash!
   newz = Dir['new/*']
@@ -60,6 +60,6 @@ def consolidate
   log "Cleaning up databases"
   the_db.reject! { |k, v| /(core|extra|community)\.db(\.sig)?$/.match(k) }
 
-  log "New database: #{db.size}B"
+  log "Writing New database"
   File.open(Pacache::DB::DB, 'w') do |fout| YAML.dump(the_db, fout) end
 end
