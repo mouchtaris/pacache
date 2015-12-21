@@ -1,11 +1,12 @@
 require 'fileutils'
-require 'yaml'
+require 'haml'
 require 'net/http'
+require 'pp'
+require 'pry'
 require 'tilt/haml'
 require 'tilt/sass'
 require 'uri'
-require 'pp'
-require 'haml'
+require 'yaml'
 
 require_relative 'pacache'
 
@@ -59,6 +60,9 @@ def consolidate
   end
   log "Cleaning up databases"
   the_db.reject! { |k, v| /(core|extra|community)\.db(\.sig)?$/.match(k) }
+
+  log "Pry injection for mods"
+  pry binding
 
   log "Writing New database"
   File.open(Pacache::DB::DB, 'w') do |fout| YAML.dump(the_db, fout) end

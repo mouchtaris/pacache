@@ -5,4 +5,4 @@ gem 'sinatra', github: 'sinatra/sinatra'
 gem 'haml', github: 'haml/haml'
 gem 'sass', github: 'sass/sass'
 gem 'thin', github: 'macournoyer/thin'
-
+gem 'pry'
