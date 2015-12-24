@@ -1,3 +1,5 @@
+require_relative '../lib/main'
+
 def new_main
   Class.new {
     include Main
