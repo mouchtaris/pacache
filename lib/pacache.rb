@@ -1,5 +1,3 @@
-require 'yaml'
-
 module Pacache
 
 require_relative 'pacache/db'
