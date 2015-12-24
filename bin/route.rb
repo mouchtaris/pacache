@@ -1,5 +1,5 @@
 require 'sinatra'
-require_relative 'lib/main'
+require_relative '../lib/main'
 require_relative 'main'
 
 main = new_main
