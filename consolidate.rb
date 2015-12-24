@@ -1,3 +1,3 @@
 require_relative 'lib/main'
 
-consolidate
+new_main.consolidate

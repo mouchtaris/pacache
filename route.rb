@@ -1,19 +1,8 @@
-require_relative 'lib/main'
 require 'sinatra'
+require_relative 'lib/main'
+require_relative 'main'
 
-main = Class.new {
-  include Main
-
-  def db
-    @db ||= Pacache::DB.new
-  end
-
-  def logf
-    @logf ||= File.open 'log', 'w'
-  end
-
-}.new # class main
-
+main = new_main
 main.prepare_serving
 
 get '/os/Linux/distr/archlinux/:repo/os/:arch/*' do |repo, arch, path|
