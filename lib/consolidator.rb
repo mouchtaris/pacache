@@ -11,7 +11,7 @@ module Consolidator
   end
 
   def each_new
-    enum = each_new_with_source.map { |s, y| y }
+    enum = each_new_with_source.map { |y,| y }
     if block_given? then enum.each(&Proc.new) else enum end
   end
 
