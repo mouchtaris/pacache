@@ -2,7 +2,7 @@
 # Mixed object:
 # - logf [File] the log stream
 #
-module Logger
+module Loggerer
 
   def log *stuff
     PP.pp stuff, logf

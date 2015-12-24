@@ -14,7 +14,7 @@ require_relative 'server'
 require_relative 'consolidator'
 
 module Main
-  include Logger
+  include Loggerer
   include Server
   include Consolidator
 end # module Main
