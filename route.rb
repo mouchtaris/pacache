@@ -1,12 +1,25 @@
 require_relative 'lib/main'
 require 'sinatra'
 
-prepare_serving
+main = Class.new {
+  include Main
+
+  def db
+    @db ||= Pacache::DB.new
+  end
+
+  def logf
+    @logf ||= File.open 'log', 'w'
+  end
+
+}.new # class main
+
+main.prepare_serving
 
 get '/os/Linux/distr/archlinux/:repo/os/:arch/*' do |repo, arch, path|
   realurl = Pacache.make_real_url(repo, arch, path)
-  log 'request for', repo, arch, path
-  entry = serve realurl
+  main.log 'request for', repo, arch, path
+  entry = main.serve realurl
   status entry[:status]
   entry[:data]
 end
