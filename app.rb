@@ -1,5 +1,5 @@
 require 'sinatra'
-require_relative 'main'
+require_relative 'bin/main'
 
 main = new_main
 main.prepare_serving
