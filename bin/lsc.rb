@@ -5,7 +5,8 @@ new_main.each_new_with_source.
     sid = /new\/(\d+)$/.match(s)[1]
     key = y.keys.first
     rx = /.*\/([.\w\d-]+)$/
-    name = rx.match(key)[1]
+    md = rx.match(key)
+    name = md ? md[1] : key
     [ sid, name ]
   }.
   map { |k, n|
