@@ -4,12 +4,26 @@
 #
 module Server
 
-  def prepare_serving
+  private \
+  def prepare_new_dir
     if File.exist?(Pacache::DB::NEW) then
       raise "Forget it. #{Pacache::DB::NEW} exists"
     else
       FileUtils::Verbose.mkdir Pacache::DB::NEW
     end
+  end
+
+  private \
+  def prepare_db_files
+    %w[ core extra community ].each do |repo|
+      url = Pacache.make_real_url(repo, 'x86_64', "#{repo}.db")
+      serve(url)
+    end
+  end
+
+  def prepare_serving
+    prepare_new_dir
+    prepare_db_files
   end
 
   def remote_get(url)
