@@ -9,7 +9,11 @@ def new_main
     end
 
     def logf
-      @logf ||= open_log_file
+      unless @logf
+        @logf = File.open 'log', 'w'
+        log 'Open log file'
+      end
+      @logf
     end
 
     private
@@ -17,11 +21,6 @@ def new_main
     def load_pacache_db
       log 'Loading database...'
       Pacache::DB.new
-    end
-
-    def open_log_file
-      log 'Open log file'
-      File.open 'log', 'w'
     end
 
   }.new
