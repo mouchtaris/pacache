@@ -5,11 +5,24 @@ def new_main
     include Main
 
     def db
-      @db ||= Pacache::DB.new
+      @db ||= load_pacache_db
     end
 
     def logf
-      @logf ||= File.open 'log', 'w'
+      @logf ||= open_log_file
     end
+
+    private
+
+    def load_pacache_db
+      log 'Loading database...'
+      Pacache::DB.new
+    end
+
+    def open_log_file
+      log 'Open log file'
+      File.open 'log', 'w'
+    end
+
   }.new
 end
