@@ -11,10 +11,8 @@ require 'yaml'
 require_relative '../lib/logger'
 require_relative 'pacache'
 require_relative 'server'
-require_relative 'consolidator'
 
 module Main
   include Loggerer
   include Server
-  include Consolidator
 end # module Main

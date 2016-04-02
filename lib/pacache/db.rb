@@ -1,35 +1,41 @@
+require 'digest/sha2'
+require 'pathname'
+require 'fileutils'
+
 module Pacache
 class DB
 
-  DB = 'pacache.db'
-  NEW = 'new'
+  DB = Pathname.new('pacache.db')
 
   def initialize
-    @db = File.open DB, 'r', &YAML.method(:load)
-    @count = 0
+    FileUtils::Verbose.mkdir_p DB.to_s
   end
 
-  def internal_hash!; @db end
+  def internal_hash!
+    raise 'no'
+  end
 
   def key_for(*keys)
     File.join(*keys.map(&:to_s))
   end
 
   def lookup(*keys)
-    @db[key_for(*keys)]
+    path = path_for(*keys)
+    if path.exist?
+      path.read
+    end
+  end
+
+  def path_for(*keys)
+    key = key_for(*keys)
+    DB + Digest::SHA512.hexdigest(key)
   end
 
   def update(data, *keys)
-    key = key_for(*keys)
-    @db[key] = data
-    path = File.join(NEW, @count.to_s)
-    @count += 1
-    if File.exist?(path) then
-      raise "UNACCEPTABLE: path exists: #{path}"
+    path_for(*keys).open('wb') do |fout|
+      fout.write(data)
     end
-    File.open(path, 'w') do |fout|
-      YAML.dump({key => data}, fout)
-    end
+
     data
   end
 
