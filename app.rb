@@ -1,15 +1,33 @@
 require 'sinatra'
-require_relative 'bin/main'
+require_relative 'ruby/cache'
+require_relative 'ruby/mirror'
+require_relative 'ruby/loggerer'
+require_relative 'ruby/di'
+require 'yaml'
 
-main = new_main
-main.prepare_serving
+di = DI.new
 
-get '/os/Linux/distr/archlinux/:repo/os/:arch/*' do |repo, arch, path|
-  realurl = Pacache.make_real_url(repo, arch, path)
-  main.log 'request for', repo, arch, path
-  entry = main.serve realurl
-  status entry[:status]
-  entry[:data]
+begin
+  di.logger = Loggerer.new(File.open('logs', 'w'))
+end
+
+begin
+  mirrors = YAML.parse('mirrors.yaml')
+  di.mirror = Mirror.new(di, mirrors)
+end
+
+begin
+  di.cache = Cache.new(di)
+end
+
+get '/:repo/os/:arch/*' do |repo, arch, path|
+  filepath = di.cache.fetch(repo, arch, path)
+  if filepath
+    status 200
+    file filepath
+  else
+    status 503
+  end
 end
 
 get '*' do |wat|
