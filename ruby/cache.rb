@@ -11,7 +11,7 @@ class Cache
   attr_reader :di
 
   def in_progress
-    @in_progress.length
+    @in_progress.size
   end
 
   def fetch(repo, arch, path)
@@ -19,7 +19,9 @@ class Cache
   end
 
   def mark_in_progress(path)
-    @in_progress.put_if_absent(path, true)
+    is_present = @in_progress.put_if_absent(path, true)
+    locked = !is_present
+    locked
   end
 
   def mark_done(path)
@@ -68,21 +70,25 @@ class CacheAccess
     end
   end
 
-  def begin_http_get(file)
+  def begin_http_get
+    loggy = get_loggy(filepath)
+
     Concurrent.future(:io) { di.mirror.get(@repo, @arch, @path) }
-      .then(&method(:complete))
-      .rescue(&method(:fail))
+      .then { |data| complete(loggy, data) }
+      .rescue { |data| fail(loggy, data) }
     nil
   end
 
-  def complete(data)
-    FileUtils::Verbose.mkdir_p File.basename(filepath)
+  def complete(loggy, data)
+    loggy.('writing to file')
+    FileUtils::Verbose.mkdir_p File.dirname(filepath)
     File.open(partial_filepath, 'w') { |out| out.write(data) }
     File.rename(partial_filepath, filepath)
     finally
   end
 
-  def fail
+  def fail(loggy, data)
+    loggy.(error: data)
     File.open(failure_filepath, 'w') { }
     finally
   end
@@ -93,5 +99,9 @@ class CacheAccess
 
   def di
     @cache.di
+  end
+
+  def get_loggy(*args)
+    di.logger.begin(CacheAccess, caller_locations.last.label, *args)
   end
 end
