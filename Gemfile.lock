@@ -35,6 +35,8 @@ GIT
   branch: master
   specs:
     concurrent-ruby (1.0.2)
+    concurrent-ruby-edge (0.2.2)
+      concurrent-ruby (~> 1.0.2)
 
 GIT
   remote: git://github.com/sass/sass.git
@@ -82,6 +84,7 @@ PLATFORMS
 
 DEPENDENCIES
   concurrent-ruby!
+  concurrent-ruby-edge!
   haml!
   hashie!
   pry!
