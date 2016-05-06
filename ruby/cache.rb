@@ -80,21 +80,21 @@ class CacheAccess
   end
 
   def complete(loggy, data)
-    loggy.('writing to file')
     FileUtils::Verbose.mkdir_p File.dirname(filepath)
     File.open(partial_filepath, 'w') { |out| out.write(data) }
     File.rename(partial_filepath, filepath)
-    finally
+    finally(loggy)
   end
 
   def fail(loggy, data)
     loggy.(error: data)
     File.open(failure_filepath, 'w') { }
-    finally
+    finally(loggy)
   end
 
-  def finally
+  def finally(loggy)
     @cache.mark_done(filepath)
+    loggy.(in_progress: @cache.in_progress)
   end
 
   def di
