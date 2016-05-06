@@ -102,6 +102,9 @@ class CacheAccess
   end
 
   def get_loggy(*args)
-    di.logger.begin(CacheAccess, caller_locations.last.label, *args)
+    method = caller_locations
+      .map(&:label)
+      .find { |label| /\s/.match(label).nil? }
+    di.logger.begin(CacheAccess, method, *args)
   end
 end
