@@ -33,8 +33,7 @@ loggy.(msg: 'HELLO!')
 get '/:repo/os/:arch/*' do |repo, arch, path|
   filepath = di.cache.fetch(repo, arch, path)
   if filepath
-    status 200
-    file filepath
+    send_file filepath
   else
     status 503
   end
