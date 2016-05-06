@@ -65,7 +65,7 @@ class CacheAccess
 
   def return_if_files_found
     case
-    when File.exist?(failure_filepath) then nil
+    when File.exist?(failure_filepath) then :fail
     when File.exist?(filepath) then filepath
     end
   end

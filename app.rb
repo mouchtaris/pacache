@@ -31,11 +31,11 @@ loggy = di.logger.begin(self.class, '<main>')
 loggy.(msg: 'HELLO!')
 
 get '/:repo/os/:arch/*' do |repo, arch, path|
-  filepath = di.cache.fetch(repo, arch, path)
-  if filepath
-    send_file filepath
-  else
-    status 503
+  result = di.cache.fetch(repo, arch, path)
+  case result
+  when String then send_file result
+  when :fail then status 404
+  else status 503
   end
 end
 
