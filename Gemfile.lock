@@ -24,14 +24,14 @@ GIT
 
 GIT
   remote: git://github.com/puma/puma.git
-  revision: 41c771b2647e4e15c00cb7725975fe126c114339
+  revision: 7dfd7fa54afc6cab6fd967c45d5cd8d2fb889095
   branch: master
   specs:
     puma (3.4.0)
 
 GIT
   remote: git://github.com/ruby-concurrency/concurrent-ruby.git
-  revision: d608a9e260da40ce4e9464495845d1ee4bc97cd4
+  revision: 0d044bebdda2781b1b265472555090941232bbe5
   branch: master
   specs:
     concurrent-ruby (1.0.2)
@@ -40,7 +40,7 @@ GIT
 
 GIT
   remote: git://github.com/sass/sass.git
-  revision: 8fef7a37a1e47e48e1d2e5e8280ce00137015809
+  revision: 56b3e1b1ef126292e93248b9ac005e8bb1c41e30
   branch: master
   specs:
     sass (4.0.0.alpha.1)
@@ -48,12 +48,12 @@ GIT
 
 GIT
   remote: git://github.com/sinatra/sinatra.git
-  revision: aa4ad35b7c5e6ed5fb64b8572fc916003519bc3f
+  revision: 5e9e23621c1f6abbd793b46452cb11ae8ca1277e
   branch: master
   specs:
     sinatra (2.0.0.pre.alpha)
       mustermann (~> 0.4)
-      rack (= 2.0.0.alpha)
+      rack (= 2.0.0.rc1)
       rack-protection (~> 1.5)
       tilt (~> 2.0)
 
@@ -66,7 +66,7 @@ GEM
     method_source (0.8.2)
     mustermann (0.4.0)
       tool (~> 0.2)
-    rack (2.0.0.alpha)
+    rack (2.0.0.rc1)
       json
     rack-protection (1.5.3)
       rack
@@ -76,7 +76,7 @@ GEM
     sass-listen (3.0.7)
       rb-fsevent (>= 0.9.3)
       rb-inotify (>= 0.9.7)
-    tilt (2.0.2)
+    tilt (2.0.4)
     tool (0.2.3)
 
 PLATFORMS
@@ -93,4 +93,4 @@ DEPENDENCIES
   sinatra!
 
 BUNDLED WITH
-   1.12.2
+   1.12.4
