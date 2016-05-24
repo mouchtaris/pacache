@@ -1,10 +1,10 @@
-= Archlinux Pacman Caching Service
+# Archlinux Pacman Caching Service
 
 
 This is not a mirror exactly, rather than a local, efficient, caching
 service.
 
-== How it behaves to clients
+## How it behaves to clients
 
 Archache (pacache) receives requests from pacman clients, who are
 trying to HTTP get files from a mirror.
@@ -15,7 +15,7 @@ trying to HTTP get files from a mirror.
 * If the file could not be retrieved from a real mirror, then a 404 is
   returned to the client and future retries will behave the same.
 
-== How it behaves to mirrors (and what happens behind the scenes)
+## How it behaves to mirrors (and what happens behind the scenes)
 
 When a cache miss happens, archache will immediately send 503 to the
 client, but it will also start fetching the file from a real mirror.
@@ -36,7 +36,7 @@ fashion.
 So, in the end, arcache makes parallel, bound in number, requests, to a
 number of mirrors for fetching requested files.
 
-== How it behaves to clients a bit later
+## How it behaves to clients a bit later
 
 Next time a client retries to fetch a file, if it has been fetched they
 will get it back with a simple 200 Found. If it is still being
@@ -44,7 +44,7 @@ downloaded they will still get a 503. If fetching failed for any reason
 (including other 503s from chained caches...), the client will get back
 404 - Never retry again.
 
-== How it behaves on the filesystem (or how it behaves as a cache)
+## How it behaves on the filesystem (or how it behaves as a cache)
 
 Archache stores files directly to a configured directory. When a
 requesst is made, it checks if a file entry for that file name exists.
@@ -59,27 +59,27 @@ One could also spot `"#{filename}.part"` files, which means the file is
 being downloaded, but this is never inspected by pacache. It uses the
 internal, thread-safe queue, for keeping track of file being fetched.
 
-== How to deal with it
+## How to deal with it
 
 Three things:
 
-1. config.yaml:
+One, *config.yaml*
 
     cache_dir: /somewhere
 
-2. mirrors.yaml:
+Two, *mirrors.yaml*
 
-    # NOtICE: no $arch/os/$repo
+    # NOTICE: no $arch/os/$repo
     - http://mirror.one/
     # NOTICE: no https
     - http://mirror.two/
 
-3. `rm cache_dir/**.failed`, to clean cache failures and have pacache
-   retry to fetch these files next time a client requests them.
+Three, `rm cache_dir/**.failed`, to clean cache failures and have pacache
+retry to fetch these files next time a client requests them.
 
-== Docker image
+## Docker image
 
-=== Building it
+### Building it
 
     docker build -t you/archache .
 
@@ -92,7 +92,7 @@ as a mirror in the beginning of the Dockerfile, as such
     RUN printf '%s\n' 'Service = http://localhost:6666/' | tee
     /etc/pacman.d/mirrorlist
 
-=== Running it
+### Running it
 
     export CACHE_DIR=/where/do/i/want/to/place/my/cache/questionmark
     export CACHE_PORT=12738 # or something else
