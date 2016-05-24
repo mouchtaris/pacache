@@ -24,9 +24,7 @@ RUN true \
     && sudo -u archache bash -c ' true \
         && gem install --no-document --bindir _gem_bin --user-install bundler \
         && _gem_bin/bundler install --deployment --local \
-        && printf -- '\''---\ncache_dir: /archache\n'\'' | tee config.yaml \
-        && find . -type d -print0 | xargs -0 chmod 755 \
-        && find . -type f -print0 | xargs -0 chmod 644 \
+        && printf -- '\''---\ncache_dir: /cache\n'\'' | tee config.yaml \
         && true' \
     && pacman --noconfirm -Rncs \
         gcc \
