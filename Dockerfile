@@ -25,6 +25,8 @@ RUN true \
         && gem install --no-document --bindir _gem_bin --user-install bundler \
         && _gem_bin/bundler install --deployment --local \
         && printf -- '\''---\ncache_dir: /archache\n'\'' | tee config.yaml \
+        && find . -type d -print0 | xargs -0 chmod 755 \
+        && find . -type f -print0 | xargs -0 chmod 644 \
         && true' \
     && pacman --noconfirm -Rncs \
         gcc \
@@ -34,6 +36,6 @@ RUN true \
     && true
 
 USER archache
-CMD _gem_bin/bundler exec ruby app.rb -p 9000 -o 0.0.0.0
+CMD ruby _gem_bin/bundler exec ruby app.rb -p 9000 -o 0.0.0.0
 
 # vim: et ts=4 sw=4
