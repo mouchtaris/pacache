@@ -1,4 +1,6 @@
 [![security](https://hakiri.io/github/mouchtaris/pacache/master.svg)](https://hakiri.io/github/mouchtaris/pacache/master)
+[![Code Climate](https://codeclimate.com/github/mouchtaris/pacache/badges/gpa.svg)](https://codeclimate.com/github/mouchtaris/pacache)
+[![Test Coverage](https://codeclimate.com/github/mouchtaris/pacache/badges/coverage.svg)](https://codeclimate.com/github/mouchtaris/pacache/coverage)
 
 # Archlinux Pacman Caching Service
 
