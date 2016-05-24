@@ -35,13 +35,15 @@ module Config
     end
 
     def load_mirrors
-      if File.exist?(MIRRORS_PATH)
-        YAML.load(File.read('mirrors.yaml'))
-      elsif env_val = ENV['ARCHACHE_MIRRORS']
-        sprintf(env_val)
-      else
-        loading_mirrors_failed
-      end
+      mirrors_yaml =
+        if File.exist?(MIRRORS_PATH)
+          File.read('mirrors.yaml')
+        elsif env_val = ENV['ARCHACHE_MIRRORS']
+          sprintf(env_val)
+        else
+          loading_mirrors_failed
+        end
+      YAML.load(mirrors_yaml)
     end
 
   end
