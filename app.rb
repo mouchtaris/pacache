@@ -3,43 +3,25 @@ require_relative 'ruby/cache'
 require_relative 'ruby/mirror'
 require_relative 'ruby/loggerer'
 require_relative 'ruby/di'
+require_relative 'ruby/config'
 require 'yaml'
 require 'hashie'
 
 di = DI.new
 
 begin
-  di.config = Hashie::Mash.new(YAML.load(File.read('config.yaml')))
-rescue Errno::ENOENT
-  puts %q{
-    |---
-    |#config.yaml
-    |cache_dir: cache2
-  }.gsub(/^\s+(\||$)/, '')
-  exit 1
+  di.config = Config.load_config
+end
+
+begin
+  mirrors = Config.load_mirrors
+  di.mirror = Mirror.new(di, mirrors)
 end
 
 begin
   logf = File.open('logs', 'w')
   sink = -> (msg) { logf.puts(msg); logf.flush }
   di.logger = Loggerer.new(sink)
-end
-
-begin
-  mirrors = YAML.load(File.read('mirrors.yaml'))
-  di.mirror = Mirror.new(di, mirrors)
-rescue Errno::ENOENT
-  puts %q{
-    |---
-    |#mirrors.yaml
-    |- http://ftp.nluug.nl/os/Linux/distr/archlinux
-    |- https://mirror.f4st.host/archlinux
-    |- http://mirror.f4st.host/archlinux
-    |- https://mirror.neuf.no/archlinux
-    |- http://mirror.bytemark.co.uk/archlinux
-    |- http://foss.aueb.gr/mirrors/linux/archlinux
-  }.gsub(/^\s+(\||$)/, '')
-  exit 1
 end
 
 begin
