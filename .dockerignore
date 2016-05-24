@@ -1,0 +1,6 @@
+Dockerfile
+LICENSE
+*.md
+**/*.md
+.git/
+**/.git/
