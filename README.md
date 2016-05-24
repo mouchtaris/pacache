@@ -1,3 +1,5 @@
+[![security](https://hakiri.io/github/mouchtaris/pacache/master.svg)](https://hakiri.io/github/mouchtaris/pacache/master)
+
 # Archlinux Pacman Caching Service
 
 
