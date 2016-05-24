@@ -93,8 +93,8 @@ package --all` beforehand.
 Also, if you are running archache somewhere already, you could add it
 as a mirror in the beginning of the Dockerfile, as such
 
-    RUN printf '%s\n' 'Service = http://localhost:6666/' | tee
-    /etc/pacman.d/mirrorlist
+    RUN printf '%s\n' 'Server = http://localhost:666/$repo/os/$arch' | \
+        tee /etc/pacman.d/mirrorlist
 
 ### Running it
 
