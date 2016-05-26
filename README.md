@@ -106,7 +106,7 @@ as a mirror in the beginning of the Dockerfile, as such
         --name archache \
         --volume "$CACHE_DIR":cache \
         --publish "$CACHE_PORT":9000 \
-        --env ARCHACHE_MIRRORS="$CACHE_MIRRORS" \
+        --env ARCACHE_MIRRORS="$CACHE_MIRRORS" \
         --user "$(id -u):$(id -g)" \
         --interactive \
         --tty \
@@ -125,5 +125,5 @@ that port.
 
 Make sure the mount cache dir is writable by all or by user 1000:1000.
 
-The `ARCHACHE_MIRRORS` env is a `printf(1)` formatted YAML string,
+The `ARCACHE_MIRRORS` env is a `printf(1)` formatted YAML string,
 which is evaluated directly using printf.

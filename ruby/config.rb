@@ -38,7 +38,7 @@ module Config
       mirrors_yaml =
         if File.exist?(MIRRORS_PATH)
           File.read('mirrors.yaml')
-        elsif env_val = ENV['ARCHACHE_MIRRORS']
+        elsif env_val = ENV['ARCACHE_MIRRORS']
           sprintf(env_val)
         else
           loading_mirrors_failed
