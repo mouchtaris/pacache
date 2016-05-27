@@ -118,7 +118,7 @@ The docker image comes preconfigured, using
     cache_dir: /cache
 
 It is recommended to bind a volume (to the filesystem or pure) for that
-directory.
+directory. **Make sure it is writable by all or 1000:1000**.
 
 The webserver will start listening at 0.0.0.0:9000. So, expose/forward
 that port.
