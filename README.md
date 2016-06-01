@@ -107,7 +107,6 @@ as a mirror in the beginning of the Dockerfile, as such
         --volume "$CACHE_DIR":cache \
         --publish "$CACHE_PORT":9000 \
         --env ARCACHE_MIRRORS="$CACHE_MIRRORS" \
-        --user "$(id -u):$(id -g)" \
         --interactive \
         --tty \
         --detach \
