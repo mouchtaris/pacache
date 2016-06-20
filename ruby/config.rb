@@ -17,7 +17,7 @@ module Config
     def load_config
       Hashie::Mash.new(YAML.load(File.read(CONFIG_PATH)))
     rescue Errno::ENOENT => e
-      loading_config_failed
+      loading_config_failed(e)
     end
 
     def loading_mirrors_failed
