@@ -43,7 +43,7 @@ loggy.(msg: 'HELLO!')
 helpers do
   def serve(cache_result)
     case cache_result
-    when String then send_file result
+    when String then send_file cache_result
     when :fail then status 404
     else status 503
     end
