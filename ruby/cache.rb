@@ -15,7 +15,15 @@ class Cache
   end
 
   def fetch(repo, arch, path)
-    CacheAccess.new(self, repo, arch, path).fetch
+    fetch_mirror(di.mirror, 'arch', [repo, arch, path])
+  end
+
+  def fetch_ubuntu(dist, path)
+    fetch_mirror(di.ubuntu_mirror, 'ubuntu', [dist, path])
+  end
+
+  def fetch_mirror(mirror, prefix, path)
+    CacheAccess.new(self, mirror, prefix, path).fetch
   end
 
   def mark_in_progress(path)
@@ -32,15 +40,15 @@ end
 
 class CacheAccess
 
-  def initialize(cache, repo, arch, path)
+  def initialize(cache, mirror, prefix, path)
     @cache = cache
-    @repo = repo
-    @arch = arch
+    @mirror = mirror
+    @prefix = prefix
     @path = path
   end
 
   def filepath
-    File.join(di.config.cache_dir, @repo, @arch, @path)
+    File.join(di.config.cache_dir, @prefix, *@path)
   end
 
   def partial_filepath
@@ -60,7 +68,8 @@ class CacheAccess
   include FileUtils::Verbose
 
   def begin_fetch
-    @cache.mark_in_progress(filepath) && (return_if_files_found || begin_http_get)
+    @cache.mark_in_progress(filepath) &&
+      (return_if_files_found || begin_http_get)
   end
 
   def return_if_files_found
@@ -73,7 +82,8 @@ class CacheAccess
   def begin_http_get
     loggy = get_loggy(filepath)
 
-    Concurrent.future(:io) { di.mirror.get(@repo, @arch, @path) }
+    Concurrent
+      .future(:io) { @mirror.get(*@path) }
       .then { |data| complete(loggy, data) }
       .rescue { |data| fail(loggy, data) }
     nil

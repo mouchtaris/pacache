@@ -46,6 +46,27 @@ module Config
       YAML.load(mirrors_yaml)
     end
 
-  end
+    UBUNTU_MIRRORS = 'ubuntu_mirrors.yaml'
 
+    def loading_ubuntu_mirrors_failed
+      puts %q{
+        |---
+        |# ubuntu_mirrors.yaml
+        |- http://archive.ubuntu.com
+      }.gsub(/^\s+(\||$)/, '')
+      raise 'loading ubuntu mirrors failed'
+    end
+
+    def load_ubuntu_mirrors
+      mirrors_yaml =
+        if File.exists?(UBUNTU_MIRRORS)
+          File.read(UBUNTU_MIRRORS)
+        elsif env_val = ENV['UBUNTU_MIRRORS']
+          sprintf(env_val)
+        else
+          loading_ubuntu_mirrors_failed
+        end
+      YAML.load(mirrors_yaml)
+    end
+  end
 end

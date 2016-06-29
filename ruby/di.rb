@@ -2,5 +2,6 @@ DI = Struct.new(
   :logger,
   :mirror,
   :cache,
-  :config
+  :config,
+  :ubuntu_mirror
 )
