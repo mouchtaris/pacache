@@ -40,17 +40,22 @@ end
 loggy = di.logger.begin(self.class, '<main>')
 loggy.(msg: 'HELLO!')
 
-get '/arch/:repo/os/:arch/*' do |repo, arch, path|
-  result = di.cache.fetch(repo, arch, path)
-  case result
-  when String then send_file result
-  when :fail then status 404
-  else status 503
+helpers do
+  def serve(cache_result)
+    case cache_result
+    when String then send_file result
+    when :fail then status 404
+    else status 503
+    end
   end
 end
 
-get '/ubuntu/*' do
-  status 505
+get '/arch/:repo/os/:arch/*' do |repo, arch, path|
+  serve di.cache.fetch(repo, arch, path)
+end
+
+get '/ubuntu/dists/:dist/*' do |dist, path|
+  serve di.cache.fetch_ubuntu(dist, path)
 end
 
 get '*' do |wat|
