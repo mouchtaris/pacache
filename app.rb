@@ -23,8 +23,8 @@ end
 
 begin
   ubuntu_mirrors = Config.load_ubuntu_mirrors
-    .map { |m| "#{m}/dists/%{dist}/%{path}" }.to_a.freeze
-  di.ubuntu_mirror = Mirror.new(di, ubuntu_mirrors, %i(dist path))
+    .map { |m| "#{m}/%{wat}/%{path}" }.to_a.freeze
+  di.ubuntu_mirror = Mirror.new(di, ubuntu_mirrors, %i(wat path))
 end
 
 begin
@@ -54,8 +54,8 @@ get '/arch/:repo/os/:arch/*' do |repo, arch, path|
   serve di.cache.fetch(repo, arch, path)
 end
 
-get '/ubuntu/dists/:dist/*' do |dist, path|
-  serve di.cache.fetch_ubuntu(dist, path)
+get '/ubuntu/:wat/*' do |wat, path|
+  serve di.cache.fetch_ubuntu(wat, path)
 end
 
 get '*' do |wat|
