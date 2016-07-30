@@ -39,12 +39,13 @@ class Cache
   end
 
   def mark_done_hook(access_object)
-    mark_done(access_object.filepath)
     add_human_index_entry(access_object)
+    mark_done(access_object.filepath)
   end
 
   def add_human_index_entry(access)
-    entry_path = Pathname.new(di.config.cache_dir) + HUMAN_INDEX_DIR + access.filepath
+    filepath = Pathname.new(access.filepath)
+    entry_path = filepath + '..' + HUMAN_INDEX_DIR + filepath.basename
     FileUtils::Verbose.mkdir_p entry_path.dirname
     entry_path
       .open('w') do |fout|
