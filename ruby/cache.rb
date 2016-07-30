@@ -124,9 +124,11 @@ class CacheAccess
     finally(loggy)
   end
 
+  #
+  # @return PATH! important!
   def finally(loggy)
-    @cache.mark_done_hook(self)
     loggy.(in_progress: @cache.in_progress)
+    @cache.mark_done_hook(self)
   end
 
   def di
