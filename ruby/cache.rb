@@ -4,6 +4,8 @@ require 'fileutils'
 
 class Cache
 
+  HUMAN_INDEX_DIR = 'human_index'
+
   def initialize(di)
     @di = di
     @in_progress = Concurrent::Map.new
@@ -36,6 +38,23 @@ class Cache
     @in_progress.delete(path)
   end
 
+  def mark_done_hook(access_object)
+    mark_done(access_object.filepath)
+    add_human_index_entry(access_object)
+  end
+
+  def add_human_index_entry(access)
+    entry_path = Pathname.new(HUMAN_INDEX_DIR) + access.filepath
+    FileUtils::Verbode.mkdir_p entry_path.dirname
+    entry_path
+      .open('w') do |fout|
+        fout.puts '---'
+        fout.puts "- #{access.prefix}"
+        access.path.each do |path_element|
+          fout.puts "- #{path_element}"
+        end
+      end
+  end
 end
 
 class CacheAccess
@@ -46,9 +65,12 @@ class CacheAccess
     @prefix = prefix
     @path = path
   end
+  attr_reader :path, :prefix
 
   def filepath
-    File.join(di.config.cache_dir, @prefix, *@path)
+    specific_path = File.join(*@path)
+    fs_friendly_path = Digest::SHA512.hexdigest(specific_path)
+    File.join(di.config.cache_dir, @prefix, fs_friendly_path)
   end
 
   def partial_filepath
@@ -103,7 +125,7 @@ class CacheAccess
   end
 
   def finally(loggy)
-    @cache.mark_done(filepath)
+    @cache.mark_done_hook(self)
     loggy.(in_progress: @cache.in_progress)
   end
 
