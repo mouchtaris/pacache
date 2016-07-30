@@ -30,7 +30,9 @@ class Mirror
     loggy.(response: response.inspect)
 
     if response.is_a? Net::HTTPSuccess
-      response.body
+      response.body.tap do |body|
+        loggy.(sum: Digest::MD5.hexdigest(body))
+      end
     else
       raise 'acquisition error'
     end
