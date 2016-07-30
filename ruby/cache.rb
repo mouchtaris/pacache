@@ -45,7 +45,7 @@ class Cache
 
   def add_human_index_entry(access)
     entry_path = Pathname.new(HUMAN_INDEX_DIR) + access.filepath
-    FileUtils::Verbode.mkdir_p entry_path.dirname
+    FileUtils::Verbose.mkdir_p entry_path.dirname
     entry_path
       .open('w') do |fout|
         fout.puts '---'
