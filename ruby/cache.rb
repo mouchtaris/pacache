@@ -44,7 +44,7 @@ class Cache
   end
 
   def add_human_index_entry(access)
-    entry_path = Pathname.new(HUMAN_INDEX_DIR) + access.filepath
+    entry_path = Pathname.new(di.config.cache_dir) + HUMAN_INDEX_DIR + access.filepath
     FileUtils::Verbose.mkdir_p entry_path.dirname
     entry_path
       .open('w') do |fout|
