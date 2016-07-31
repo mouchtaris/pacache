@@ -17,8 +17,8 @@ def i(*args)
 end
 
 i config = Config.load_config
-i cache_path = Pathname.new(config.cache_dir)
-i index_path = cache_path + 'arch' + Cache::HUMAN_INDEX_DIR
+i cache_path = Pathname.new(config.cache_dir) + 'arch'
+i index_path = cache_path + Cache::HUMAN_INDEX_DIR
 
 idx = index_path
   .enum_for(:each_child)
@@ -31,5 +31,6 @@ when 'db'
   idx
     .find_all { |id, file| file.last =~ /\.db$/ }
     .map { |id, file| id }
-    .each { |id| print "#{id}\x00" }
+    .map { |id| cache_path + id.basename }
+    .each { |package| print "#{package}\x00" }
 end
