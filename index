@@ -1,0 +1,35 @@
+#!/usr/bin/env ruby
+
+require 'pathname'
+require 'yaml'
+
+require 'bundler/setup'
+
+require 'hashie'
+
+require './ruby/cache'
+require './ruby/config'
+
+def i(*args)
+  args.each do |arg|
+    STDERR.puts(arg.inspect)
+  end
+end
+
+i config = Config.load_config
+i cache_path = Pathname.new(config.cache_dir)
+i index_path = cache_path + 'arch' + Cache::HUMAN_INDEX_DIR
+
+idx = index_path
+  .enum_for(:each_child)
+  .map { |id| [id, id.read] }
+  .map { |id, cont| [id, YAML.load(cont)] }
+  .to_h
+
+case ARGV[0]
+when 'db'
+  idx
+    .find_all { |id, file| file.last =~ /\.db$/ }
+    .map { |id, file| id }
+    .each { |id| print "#{id}\x00" }
+end
