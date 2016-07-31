@@ -116,12 +116,14 @@ class CacheAccess
     FileUtils::Verbose.mkdir_p File.dirname(filepath)
     File.open(partial_filepath, 'w') { |out| out.write(data) }
     File.rename(partial_filepath, filepath)
+  ensure
     finally(loggy)
   end
 
   def fail(loggy, data)
     loggy.(error: data)
     File.open(failure_filepath, 'w') { }
+  ensure
     finally(loggy)
   end
 
