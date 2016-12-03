@@ -1,6 +1,6 @@
 FROM base/archlinux
 
-RUN printf '%s\n' 'Server = http://172.17.0.1:34000/arch/$repo/os/$arch' | \
+RUN printf '%s\n' 'Server = http://172.17.0.1:9000/arch/$repo/os/$arch' | \
         tee /etc/pacman.d/mirrorlist
 RUN true \
     && pacman --noconfirm --needed -Sy \
