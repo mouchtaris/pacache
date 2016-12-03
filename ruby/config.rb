@@ -49,9 +49,9 @@ module Config
     UBUNTU_MIRRORS = 'ubuntu_mirrors.yaml'
 
     def loading_ubuntu_mirrors_failed
-      puts %q{
+      puts %Q{
         |---
-        |# ubuntu_mirrors.yaml
+        |# #{UBUNTU_MIRRORS}
         |- http://archive.ubuntu.com
       }.gsub(/^\s+(\||$)/, '')
       raise 'loading ubuntu mirrors failed'
@@ -65,6 +65,29 @@ module Config
           sprintf(env_val)
         else
           loading_ubuntu_mirrors_failed
+        end
+      YAML.load(mirrors_yaml)
+    end
+
+    NPM_MIRRORS = 'npm_mirrors.yaml'
+
+    def loading_npm_mirrors_failed
+      puts %Q{
+        |---
+        |# #{NPM_MIRRORS}
+        |- https://registry.npmjs.org
+      }.gsub(/^\s+(\||$)/, '')
+      raise 'loading npm mirrors failed'
+    end
+
+    def load_npm_mirrors
+      mirrors_yaml =
+        if File.exists?(NPM_MIRRORS)
+          File.read(NPM_MIRRORS)
+        elsif env_val = ENV['NPM_MIRRORS']
+          sprintf(env_val)
+        else
+          loading_npm_mirrors_failed
         end
       YAML.load(mirrors_yaml)
     end

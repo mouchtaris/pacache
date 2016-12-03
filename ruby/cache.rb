@@ -24,6 +24,10 @@ class Cache
     fetch_mirror(di.ubuntu_mirror, 'ubuntu', [dist, path])
   end
 
+  def fetch_npm(path)
+    fetch_mirror(di.npm_mirror, 'npm', [path])
+  end
+
   def fetch_mirror(mirror, prefix, path)
     CacheAccess.new(self, mirror, prefix, path).fetch
   end

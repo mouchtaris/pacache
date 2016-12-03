@@ -28,6 +28,12 @@ begin
 end
 
 begin
+  npm_mirrors = Config.load_npm_mirrors
+    .map { |m| "#{m}/%{wat}/%{path}" }.to_a.freeze
+  di.npm_mirror = Mirror.new(di, npm_mirrors, %i{path})
+end
+
+begin
   logf = File.open('logs', 'w')
   sink = -> (msg) { logf.puts(msg); logf.flush }
   di.logger = Loggerer.new(sink)
@@ -58,9 +64,17 @@ get '/ubuntu/:wat/*' do |wat, path|
   serve di.cache.fetch_ubuntu(wat, path)
 end
 
-get '*' do |wat|
-  @wat = wat
-  status 404
-  haml :what
+get '/npm/*' do |path|
+  serve di.cache.fetch_npm(path)
 end
 
+def wat(method)
+  send method, '*' do |wat|
+    @method = method
+    @wat = wat
+    status 404
+    haml :what
+  end
+end
+
+%i{ get post options head delete put }.each &method(:wat)

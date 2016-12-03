@@ -3,5 +3,6 @@ DI = Struct.new(
   :mirror,
   :cache,
   :config,
-  :ubuntu_mirror
+  :ubuntu_mirror,
+  :npm_mirror
 )
