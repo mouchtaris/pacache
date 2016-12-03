@@ -16,7 +16,7 @@ def i(*args)
   end
 end
 
-i config = Config.load_config
+i config = AppConfig.load_config
 i cache_path = Pathname.new(config.cache_dir) + 'arch'
 i index_path = cache_path + Cache::HUMAN_INDEX_DIR
 

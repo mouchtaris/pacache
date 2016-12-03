@@ -12,23 +12,23 @@ require_relative 'ruby/config'
 di = DI.new
 
 begin
-  di.config = Config.load_config
+  di.config = AppConfig.load_config
 end
 
 begin
-  mirrors = Config.load_mirrors
+  mirrors = AppConfig.load_mirrors
     .map { |m| "#{m}/%{repo}/os/%{arch}/%{path}" }.to_a.freeze
   di.mirror = Mirror.new(di, mirrors, %i(repo arch path))
 end
 
 begin
-  ubuntu_mirrors = Config.load_ubuntu_mirrors
+  ubuntu_mirrors = AppConfig.load_ubuntu_mirrors
     .map { |m| "#{m}/%{wat}/%{path}" }.to_a.freeze
   di.ubuntu_mirror = Mirror.new(di, ubuntu_mirrors, %i(wat path))
 end
 
 begin
-  npm_mirrors = Config.load_npm_mirrors
+  npm_mirrors = AppConfig.load_npm_mirrors
     .map { |m| "#{m}/%{wat}/%{path}" }.to_a.freeze
   di.npm_mirror = Mirror.new(di, npm_mirrors, %i{path})
 end

@@ -1,4 +1,4 @@
-module Config
+module AppConfig
 
   CONFIG_PATH = 'config.yaml'
   MIRRORS_PATH = 'mirrors.yaml'
